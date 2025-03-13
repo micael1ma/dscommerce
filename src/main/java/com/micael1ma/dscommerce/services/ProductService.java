@@ -1,7 +1,9 @@
 package com.micael1ma.dscommerce.services;
 
+import com.micael1ma.dscommerce.dto.CategoryDTO;
 import com.micael1ma.dscommerce.dto.ProductDTO;
 import com.micael1ma.dscommerce.dto.ProductMinDTO;
+import com.micael1ma.dscommerce.entities.Category;
 import com.micael1ma.dscommerce.entities.Product;
 import com.micael1ma.dscommerce.repositories.ProductRepository;
 import com.micael1ma.dscommerce.services.execptions.DatabaseException;
@@ -37,7 +39,7 @@ public class ProductService {
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
-        copyDtoToentity(dto, entity);
+        copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
     }
@@ -46,7 +48,7 @@ public class ProductService {
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
             Product entity = repository.getReferenceById(id);
-            copyDtoToentity(dto, entity);
+            copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
             return new ProductDTO(entity);
         }
@@ -68,11 +70,18 @@ public class ProductService {
         }
     }
 
-    private void copyDtoToentity(ProductDTO dto, Product entity) {
+    private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
+
+        entity.getCategories().clear();
+        for(CategoryDTO catDTO : dto.getCategories()) {
+            Category cat = new Category();
+            cat.setId(catDTO.getId());
+            entity.getCategories().add(cat);
+        }
     }
 
 }
