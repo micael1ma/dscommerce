@@ -1,6 +1,7 @@
 package com.micael1ma.dscommerce.services;
 
 import com.micael1ma.dscommerce.dto.ProductDTO;
+import com.micael1ma.dscommerce.dto.ProductMinDTO;
 import com.micael1ma.dscommerce.entities.Product;
 import com.micael1ma.dscommerce.repositories.ProductRepository;
 import com.micael1ma.dscommerce.services.execptions.DatabaseException;
@@ -28,9 +29,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(String name, Pageable pageable) {
+    public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
         Page<Product> result = repository.searchByName(name, pageable);
-        return result.map(x -> new ProductDTO(x));
+        return result.map(x -> new ProductMinDTO(x));
     }
 
     @Transactional
