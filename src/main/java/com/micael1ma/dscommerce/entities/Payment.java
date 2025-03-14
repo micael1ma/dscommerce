@@ -29,6 +29,18 @@ public class Payment {
         this.order = order;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public Instant getMoment() {
+        return moment;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
